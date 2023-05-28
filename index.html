@@ -4,39 +4,53 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="style.css" />
     <title>Odin: Tic Tac Toe</title>
   </head>
 
   <body>
-    <div class="header">
-      <h1>Tic-Tac-Toe</h1>
-    </div>
-    <button class="start-game-btn">Start Game</button>
-    <div class="modal-container">
-      <dialog class="modal">
-        <button class="close-modal-btn">X</button>
-        <form class="form-row" method="dialog">
-          <label for="player-name">Enter Your Name</label>
-          <input id="name" name="name" type="text" minlength="2" />
-        </form>
-        <div class="submit-name">
-          <div>
-            <button type="submit" class="submit-name-btn">Submit Name</button>
+    <div id="container">
+      <div class="header">
+        <h1>Tic-Tac-Toe</h1>
+      </div>
+      <button class="start-game-btn">Start Game</button>
+      <div class="modal-container">
+        <dialog class="modal">
+          <button class="close-modal-btn">X</button>
+          <form class="form-row" method="dialog">
+            <label for="player1-name">Player 1's Name:</label>
+            <input id="name1" name="name1" type="text" minlength="2" />
+          </form>
+          <form class="form-row" method="dialog">
+            <label for="player2-name">Player 2's Name:</label>
+            <input id="name2" name="name2" type="text" minlength="2" />
+          </form>
+          <div class="submit-name">
+            <div>
+              <button type="submit" class="submit-name-btn">Submit Name</button>
+            </div>
           </div>
-        </div>
-      </dialog>
+        </dialog>
+      </div>
+      <div class="player-name-displays">
+        <div class="player1">Player 1:</div>
+        <div class="player1-name-display"></div>
+        <div class="player2">Player 2:</div>
+        <div class="player2-name-display"></div>
+      </div>
+      <div class="game-board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+      </div>
+      <script src="script.js"></script>
     </div>
-    <div class="game-board">
-      <div class="cell" data-index="0"></div>
-      <div class="cell" data-index="1"></div>
-      <div class="cell" data-index="2"></div>
-      <div class="cell" data-index="3"></div>
-      <div class="cell" data-index="4"></div>
-      <div class="cell" data-index="5"></div>
-      <div class="cell" data-index="6"></div>
-      <div class="cell" data-index="7"></div>
-      <div class="cell" data-index="8"></div>
-    </div>
-    <script src="script.js"></script>
   </body>
 </html>

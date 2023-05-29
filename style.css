@@ -6,21 +6,90 @@ html {
 }
 
 #container {
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+
+.modal {
+    display: none;
+}
+
+.modal.open {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 25rem;
+    height: 25rem;
+    overflow: hidden;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+}
+
+.form-row {
+    margin: 1rem 0;
+    flex-basis: calc(30% - 1rem);
+}
+
+label {
+    display: flex;
+    justify-content: center;
+    /* margin-bottom: 0.5rem; */
+}
+
+input[type="text"] {
+    /* width: 100%; */
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 1rem;
+}
+
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: #3f51b5;
+}
+
+
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 1rem;
+    padding-top: 2rem;
 }
 
 .cell {
-    width: 100px;
-    height: 100px;
-    border: 2px solid black;
+    width: 200px;
+    height: 200px;
+    border: none;
+}
+
+/* Adding vertical borders */
+.cell[data-index="0"],
+.cell[data-index="1"],
+.cell[data-index="3"],
+.cell[data-index="4"],
+.cell[data-index="6"],
+.cell[data-index="7"] {
+    border-right: 2px solid black;
+}
+
+/* Adding horizontal borders */
+.cell[data-index="0"],
+.cell[data-index="1"],
+.cell[data-index="2"],
+.cell[data-index="3"],
+.cell[data-index="4"],
+.cell[data-index="5"] {
+    border-bottom: 2px solid black;
 }

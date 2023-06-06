@@ -47,10 +47,26 @@ const gameBoard = (function () {
 
   //Private function to initialize the game board
   function initializeBoard() {
-    let board = Array(9).fill(""); //Creates an array of 9 empty cells
+    console.log("Initializing the game board");
+    board = Array(9).fill(""); //Creates an array of 9 empty cells
+
+    const cells = document.querySelectorAll(".cell");
+
+    function addCellClickEventListeners() {
+      cells.forEach(function (cell) {
+        cell.addEventListener("click", function (event) {
+          const clickedCell = event.target;
+          const dataIndex = clickedCell.getAttribute("data-index");
+          console.log("Clicked cell index:", dataIndex);
+          // Call other functions or perform desired actions with the clicked cell index
+        });
+      });
+    }
+
+    addCellClickEventListeners();
   }
 
-  //Public function to get the current game baord
+  //Public function to get the current game board
   function getBoard() {
     return board;
   }
@@ -62,3 +78,5 @@ const gameBoard = (function () {
     getBoard,
   };
 })();
+
+gameBoard.initializeBoard();

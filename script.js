@@ -4,6 +4,8 @@ const startButton = document.querySelector(".start-game-btn");
 const submitNameBtn = document.querySelector(".submit-name-btn");
 const closeModalBtn = document.querySelector(".close-modal-btn");
 
+let currentPlayer = "";
+
 //Array to store player names
 let playerNames = [];
 let player1Name = document.getElementById("name1");
@@ -49,6 +51,8 @@ const gameBoard = (function () {
   function initializeBoard() {
     console.log("Initializing the game board");
     board = Array(9).fill(""); //Creates an array of 9 empty cells
+    // let playerOne = "x";
+    // let playerTwo = "o";
 
     const cells = document.querySelectorAll(".cell");
 
@@ -66,9 +70,24 @@ const gameBoard = (function () {
     addCellClickEventListeners();
   }
 
+  //Private function to toggle between players
+  function switchPlayer() {
+    console.log("Before toggle: currentPlayer =", currentPlayer);
+    currentPlayer =
+      currentPlayer === playerNames[0].value
+        ? playerNames[1].value
+        : playerNames[0].value;
+    console.log("After toggle: currentPlayer =", currentPlayer);
+  }
+
   //Public function to get the current game board
   function getBoard() {
     return board;
+  }
+
+  //Public function to toggle the current player
+  function togglePlayer() {
+    switchPlayer();
   }
 
   // Other public functions:
@@ -76,7 +95,9 @@ const gameBoard = (function () {
   return {
     initializeBoard,
     getBoard,
+    togglePlayer,
   };
 })();
 
 gameBoard.initializeBoard();
+gameBoard.togglePlayer();

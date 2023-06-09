@@ -3,8 +3,11 @@ const modal = document.querySelector(".modal");
 const startButton = document.querySelector(".start-game-btn");
 const submitNameBtn = document.querySelector(".submit-name-btn");
 const closeModalBtn = document.querySelector(".close-modal-btn");
+const player1NameDisplay = document.querySelector(".player1-name-display");
+const player2NameDisplay = document.querySelector(".player2-name-display");
 
-let currentPlayer = "";
+//Player1 will always start first, so currentPlayer = player1NameDisplay to start the game
+let currentPlayer = player1NameDisplay.textContent;
 
 //Array to store player names
 let playerNames = [];
@@ -15,11 +18,10 @@ playerNames.push(player2Name);
 
 //Function retrieve and add player names to DOM
 function displayPlayerNames() {
-  const player1NameDisplay = document.querySelector(".player1-name-display");
-  const player2NameDisplay = document.querySelector(".player2-name-display");
-
   player1NameDisplay.textContent = playerNames[0].value;
   player2NameDisplay.textContent = playerNames[1].value;
+  currentPlayer = player1NameDisplay.textContent;
+  gameBoard.togglePlayer(player1NameDisplay, player2NameDisplay);
 }
 
 //Submit button to add names to DOM
@@ -51,12 +53,9 @@ const gameBoard = (function () {
   function initializeBoard() {
     console.log("Initializing the game board");
     board = Array(9).fill(""); //Creates an array of 9 empty cells
-    // let playerOne = "x";
-    // let playerTwo = "o";
-
     const cells = document.querySelectorAll(".cell");
 
-    function addCellClickEventListeners() {
+    function playerMove() {
       cells.forEach(function (cell) {
         cell.addEventListener("click", function (event) {
           const clickedCell = event.target;
@@ -67,16 +66,16 @@ const gameBoard = (function () {
       });
     }
 
-    addCellClickEventListeners();
+    playerMove();
   }
 
   //Private function to toggle between players
-  function switchPlayer() {
+  function switchPlayer(player1, player2) {
     console.log("Before toggle: currentPlayer =", currentPlayer);
     currentPlayer =
-      currentPlayer === playerNames[0].value
-        ? playerNames[1].value
-        : playerNames[0].value;
+      currentPlayer === player1.textContent
+        ? player2.textContent
+        : player1.textContent;
     console.log("After toggle: currentPlayer =", currentPlayer);
   }
 
@@ -86,8 +85,8 @@ const gameBoard = (function () {
   }
 
   //Public function to toggle the current player
-  function togglePlayer() {
-    switchPlayer();
+  function togglePlayer(player1, player2) {
+    switchPlayer(player1, player2);
   }
 
   // Other public functions:
@@ -100,4 +99,3 @@ const gameBoard = (function () {
 })();
 
 gameBoard.initializeBoard();
-gameBoard.togglePlayer();

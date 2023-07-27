@@ -13,28 +13,6 @@ html {
     align-items: center;
 }
 
-
-.modal {
-    display: none;
-}
-
-.modal.open {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 25rem;
-    height: 25rem;
-    overflow: hidden;
-}
-
-.close-modal-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 1rem;
-}
-
 .form-row {
     margin: 1rem 0;
     flex-basis: calc(30% - 1rem);
@@ -60,36 +38,51 @@ select:focus {
     border-color: #3f51b5;
 }
 
+#controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-.game-board {
+#results {
+    color: rgb(255, 94, 0);
+    font-weight: bold;
+    padding-top: 1rem;
+}
+
+
+/* ... Other CSS rules ... */
+
+#gameboard-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     padding-top: 2rem;
 }
 
-.cell {
-    width: 200px;
-    height: 200px;
+#gameboard-container .cell {
+    width: 150px;
+    height: 150px;
     border: none;
 }
 
 /* Adding vertical borders */
-.cell[data-index="0"],
-.cell[data-index="1"],
-.cell[data-index="3"],
-.cell[data-index="4"],
-.cell[data-index="6"],
-.cell[data-index="7"] {
+#gameboard-container .cell:nth-child(1),
+#gameboard-container .cell:nth-child(2),
+#gameboard-container .cell:nth-child(4),
+#gameboard-container .cell:nth-child(5),
+#gameboard-container .cell:nth-child(7),
+#gameboard-container .cell:nth-child(8) {
     border-right: 2px solid black;
 }
 
 /* Adding horizontal borders */
-.cell[data-index="0"],
-.cell[data-index="1"],
-.cell[data-index="2"],
-.cell[data-index="3"],
-.cell[data-index="4"],
-.cell[data-index="5"] {
+#gameboard-container .cell:nth-child(1),
+#gameboard-container .cell:nth-child(2),
+#gameboard-container .cell:nth-child(3),
+#gameboard-container .cell:nth-child(4),
+#gameboard-container .cell:nth-child(5),
+#gameboard-container .cell:nth-child(6) {
     border-bottom: 2px solid black;
 }

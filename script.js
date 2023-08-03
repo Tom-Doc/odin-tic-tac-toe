@@ -4,7 +4,7 @@ const restartButton = document.querySelector("#restart-button");
 
 const displayInterface = (() => {
   const displayResults = (results) => {
-    document.querySelector("#results").innerHTML = results;
+    document.querySelector("#results").textContent = results;
   };
 
   return {
@@ -13,14 +13,15 @@ const displayInterface = (() => {
 })();
 
 // displayInterface test
-console.log("Testing displayResults function:");
-displayInterface.displayResults("Player X wins!");
+// console.log("Testing displayResults function:");
+// displayInterface.displayResults("Player X wins!");
 
 //Gameboard Module
 const gameboard = (() => {
   let board = ["", "", "", "", "", "", "", "", ""];
 
   const renderBoard = () => {
+    // Accept the board array as a parameter
     const gameboardContainer = document.querySelector("#gameboard-container");
     gameboardContainer.innerHTML = "";
 
@@ -29,7 +30,10 @@ const gameboard = (() => {
       cell.classList.add("cell");
       cell.textContent = cellValue;
 
-      cell.addEventListener("click", () => {});
+      cell.addEventListener("click", () => {
+        game.handleClick(index); // Pass the clicked cell's index to handleClick
+      });
+
       gameboardContainer.appendChild(cell);
     });
   };
@@ -39,11 +43,13 @@ const gameboard = (() => {
     // Initialize the game state (e.g., set game over flag to false, current player index, game board)
     // Render the initial game board
     game.start();
-    renderBoard();
+    renderBoard(gameboard.board, game.handleClick); // Pass the board array to renderBoard
   };
 
   return {
     startGame,
+    renderBoard,
+    board, // Expose the board array for access outside the module
   };
 })();
 
@@ -51,7 +57,7 @@ const gameboard = (() => {
 const game = (() => {
   let players = [];
   let currentPlayer;
-  let gameOver;
+  let gameOver = false;
 
   const playerSetup = () => {
     const playerXInput = document.querySelector("#player1");
@@ -71,6 +77,30 @@ const game = (() => {
     ];
   };
 
+  const checkWinner = (board) => {
+    // Define all possible winning combinations
+    const winningConditions = [
+      [0, 1, 2], // Top row
+      [3, 4, 5], // Middle row
+      [6, 7, 8], // Bottom row
+      [0, 3, 6], // Left column
+      [1, 4, 7], // Middle column
+      [2, 5, 8], // Right column
+      [0, 4, 8], // Diagonal from top-left to bottom-right
+      [2, 4, 6], // Diagonal from top-right to bottom-left
+    ];
+
+    // Check each winning condition
+    for (const condition of winningConditions) {
+      const [a, b, c] = condition;
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return currentPlayer; // Return the winning player (X or O)
+      }
+    }
+
+    return null; // No winner
+  };
+
   const start = () => {
     playerSetup();
     currentPlayer = players[0];
@@ -78,8 +108,41 @@ const game = (() => {
     console.log("Current Player:", currentPlayer);
   };
 
+  const handleClick = (index) => {
+    // This function will handle the click event for a cell with the given index
+    // You can implement the logic to update the game state, check for a winner, etc.
+
+    if (gameOver) return;
+
+    if (gameboard.board[index] === "") {
+      gameboard.board[index] = currentPlayer.mark;
+      gameboard.renderBoard(); // Update the board and re-render it
+
+      //Check for winner after each move
+      const winner = checkWinner(gameboard.board);
+      if (winner) {
+        console.log("Winner", winner);
+        displayInterface.displayResults(`${winner.name} is the winner!`);
+        gameOver = true;
+      } else {
+        // Switch players after each click
+        currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
+        console.log("Current Player:", currentPlayer);
+      }
+
+      //Check for tie
+      const tieGame = gameboard.board.every((cell) => cell !== "");
+      if (tieGame) {
+        console.log("It's a tie!");
+        displayInterface.displayResults(`It's a tie!`);
+        gameOver = true;
+      }
+    }
+  };
+
   return {
     start,
+    handleClick,
   };
 })();
 

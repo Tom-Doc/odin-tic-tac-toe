@@ -44,6 +44,8 @@ const gameboard = (() => {
     // Render the initial game board
     game.start();
     renderBoard(gameboard.board, game.handleClick); // Pass the board array to renderBoard
+    const gameboardContainer = document.querySelector("#gameboard-container");
+    gameboardContainer.style.display = "grid";
   };
 
   return {
@@ -108,6 +110,25 @@ const game = (() => {
     console.log("Current Player:", currentPlayer);
   };
 
+  const restartGame = () => {
+    for (let i = 0; i < 9; i++) {
+      gameboard.board[i] = ""; // Clear each cell's value in the board array
+    }
+    gameboard.renderBoard(); // Render the updated game board
+    displayInterface.displayResults(""); // Clear any displayed messages
+    gameOver = false; // Reset the game state
+
+    // Clear input fields
+    const playerXInput = document.querySelector("#player1");
+    const playerOInput = document.querySelector("#player2");
+    playerXInput.value = "";
+    playerOInput.value = "";
+    players = [];
+    currentPlayer = null;
+    const gameboardContainer = document.querySelector("#gameboard-container");
+    gameboardContainer.style.display = "none";
+  };
+
   const handleClick = (index) => {
     // This function will handle the click event for a cell with the given index
     // You can implement the logic to update the game state, check for a winner, etc.
@@ -143,7 +164,10 @@ const game = (() => {
   return {
     start,
     handleClick,
+    restartGame,
   };
 })();
 
 startButton.addEventListener("click", gameboard.startGame);
+
+restartButton.addEventListener("click", game.restartGame);

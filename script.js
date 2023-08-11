@@ -40,8 +40,16 @@ const gameboard = (() => {
 
   // Function to start the game
   const startGame = () => {
-    // Initialize the game state (e.g., set game over flag to false, current player index, game board)
-    // Render the initial game board
+    const playerXInput = document.querySelector("#player1");
+    const playerOInput = document.querySelector("#player2");
+    const errorElement = document.querySelector("#game-start-error");
+    //Validation check - game will not start if player names are left empty
+    if (playerXInput.value === "" || playerOInput.value === "") {
+      errorElement.textContent = "Please Enter Names For Players 1 and 2";
+      return;
+    }
+
+    errorElement.textContent = ""; // Clear the error message once names are entered
     game.start();
     renderBoard(gameboard.board, game.handleClick); // Pass the board array to renderBoard
     const gameboardContainer = document.querySelector("#gameboard-container");

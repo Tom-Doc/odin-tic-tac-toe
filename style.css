@@ -46,13 +46,36 @@ select:focus {
 }
 
 #results {
-    color: rgb(255, 94, 0);
+    color: rgb(0, 60, 255);
     font-weight: bold;
     padding-top: 1rem;
 }
 
+#game-start-error {
+    color: red;
+}
 
-/* ... Other CSS rules ... */
+#buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+#start-button {
+    border-radius: 1rem;
+    border: blue solid 1px;
+    background-color: whitesmoke;
+    margin-right: 0.5rem;
+}
+
+#restart-button {
+    border-radius: 1rem;
+    border: red solid 1px;
+    background-color: whitesmoke;
+    margin-left: 0.5rem;
+}
+
 
 #gameboard-container {
     display: grid;
@@ -65,6 +88,11 @@ select:focus {
     width: 150px;
     height: 150px;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: darkgray;
+    font-size: 24px;
 }
 
 /* Adding vertical borders */
@@ -85,4 +113,30 @@ select:focus {
 #gameboard-container .cell:nth-child(5),
 #gameboard-container .cell:nth-child(6) {
     border-bottom: 2px solid black;
+}
+
+@media (max-width: 768px) {
+    #container {
+        display: flex;
+        justify-content: center;
+        max-width: 400px;
+    }
+
+    #gameboard-container {
+        display: grid;
+        /* Switch back to grid layout for the game board */
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        max-width: 300px;
+        max-height: 300px;
+        /* Adjust the max-height to match the grid size */
+    }
+
+    /* Increase cell dimensions for better visibility */
+    #gameboard-container .cell {
+        width: 80px;
+        height: 80px;
+        font-size: 18px;
+        /* You can adjust the font size for better visibility */
+    }
 }

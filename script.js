@@ -1,7 +1,10 @@
 "use strict";
+
+// Select buttons from the DOM
 const startButton = document.querySelector("#start-button");
 const restartButton = document.querySelector("#restart-button");
 
+// Module to manage the display of game results
 const displayInterface = (() => {
   const displayResults = (results) => {
     document.querySelector("#results").textContent = results;
@@ -12,16 +15,22 @@ const displayInterface = (() => {
   };
 })();
 
-// displayInterface test
-// console.log("Testing displayResults function:");
-// displayInterface.displayResults("Player X wins!");
+// Module to manage the display of player turns
+const displayPlayerTurn = (() => {
+  const displayTurn = (turn) => {
+    document.querySelector("#player-turn").textContent = turn;
+  };
 
-//Gameboard Module
+  return {
+    displayTurn,
+  };
+})();
+
+// Module for managing the game board
 const gameboard = (() => {
   let board = ["", "", "", "", "", "", "", "", ""];
 
   const renderBoard = () => {
-    // Accept the board array as a parameter
     const gameboardContainer = document.querySelector("#gameboard-container");
     gameboardContainer.innerHTML = "";
 
@@ -31,27 +40,27 @@ const gameboard = (() => {
       cell.textContent = cellValue;
 
       cell.addEventListener("click", () => {
-        game.handleClick(index); // Pass the clicked cell's index to handleClick
+        game.handleClick(index); // Handle cell click
       });
 
       gameboardContainer.appendChild(cell);
     });
   };
 
-  // Function to start the game
   const startGame = () => {
     const playerXInput = document.querySelector("#player1");
     const playerOInput = document.querySelector("#player2");
     const errorElement = document.querySelector("#game-start-error");
-    //Validation check - game will not start if player names are left empty
+
+    // Validate player names
     if (playerXInput.value === "" || playerOInput.value === "") {
       errorElement.textContent = "Please Enter Names For Players 1 and 2";
       return;
     }
 
-    errorElement.textContent = ""; // Clear the error message once names are entered
+    errorElement.textContent = ""; // Clear error message
     game.start();
-    renderBoard(gameboard.board, game.handleClick); // Pass the board array to renderBoard
+    renderBoard(gameboard.board, game.handleClick);
     const gameboardContainer = document.querySelector("#gameboard-container");
     gameboardContainer.style.display = "grid";
   };
@@ -59,11 +68,11 @@ const gameboard = (() => {
   return {
     startGame,
     renderBoard,
-    board, // Expose the board array for access outside the module
+    board,
   };
 })();
 
-//game module
+// Module for managing the game logic
 const game = (() => {
   let players = [];
   let currentPlayer;
@@ -88,16 +97,15 @@ const game = (() => {
   };
 
   const checkWinner = (board) => {
-    // Define all possible winning combinations
     const winningConditions = [
-      [0, 1, 2], // Top row
-      [3, 4, 5], // Middle row
-      [6, 7, 8], // Bottom row
-      [0, 3, 6], // Left column
-      [1, 4, 7], // Middle column
-      [2, 5, 8], // Right column
-      [0, 4, 8], // Diagonal from top-left to bottom-right
-      [2, 4, 6], // Diagonal from top-right to bottom-left
+      [0, 1, 2], // Row
+      [3, 4, 5], // Row
+      [6, 7, 8], // Row
+      [0, 3, 6], // Column
+      [1, 4, 7], // Column
+      [2, 5, 8], // Column
+      [0, 4, 8], // Diagonal
+      [2, 4, 6], // Diagonal
     ];
 
     // Check each winning condition
@@ -114,19 +122,18 @@ const game = (() => {
   const start = () => {
     playerSetup();
     currentPlayer = players[0];
-    console.log("Players:", players);
-    console.log("Current Player:", currentPlayer);
+    displayPlayerTurn.displayTurn(`${currentPlayer.name}'s Turn`);
   };
 
   const restartGame = () => {
     for (let i = 0; i < 9; i++) {
-      gameboard.board[i] = ""; // Clear each cell's value in the board array
+      gameboard.board[i] = ""; // Clear each cell's value
     }
-    gameboard.renderBoard(); // Render the updated game board
-    displayInterface.displayResults(""); // Clear any displayed messages
-    gameOver = false; // Reset the game state
+    gameboard.renderBoard();
+    displayPlayerTurn.displayTurn("");
+    displayInterface.displayResults("");
+    gameOver = false;
 
-    // Clear input fields
     const playerXInput = document.querySelector("#player1");
     const playerOInput = document.querySelector("#player2");
     playerXInput.value = "";
@@ -138,32 +145,26 @@ const game = (() => {
   };
 
   const handleClick = (index) => {
-    // This function will handle the click event for a cell with the given index
-    // You can implement the logic to update the game state, check for a winner, etc.
-
     if (gameOver) return;
 
     if (gameboard.board[index] === "") {
       gameboard.board[index] = currentPlayer.mark;
-      gameboard.renderBoard(); // Update the board and re-render it
+      gameboard.renderBoard();
 
-      //Check for winner after each move
       const winner = checkWinner(gameboard.board);
       if (winner) {
-        console.log("Winner", winner);
         displayInterface.displayResults(`${winner.name} is the winner!`);
+        displayPlayerTurn.displayTurn(`Game Over`);
         gameOver = true;
       } else {
-        // Switch players after each click
         currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
-        console.log("Current Player:", currentPlayer);
+        displayPlayerTurn.displayTurn(`${currentPlayer.name}'s Turn`);
       }
 
-      //Check for tie
       const tieGame = gameboard.board.every((cell) => cell !== "");
       if (tieGame) {
-        console.log("It's a tie!");
         displayInterface.displayResults(`It's a tie!`);
+        displayPlayerTurn.displayTurn(`Game Over`);
         gameOver = true;
       }
     }
@@ -176,6 +177,6 @@ const game = (() => {
   };
 })();
 
+// Event listeners for buttons
 startButton.addEventListener("click", gameboard.startGame);
-
 restartButton.addEventListener("click", game.restartGame);

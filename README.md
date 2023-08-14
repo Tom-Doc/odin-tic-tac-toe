@@ -17,7 +17,7 @@
 <br />
 <div align="center">
   <a href="#">
-    <img src="./icons/logo-color.png" alt="Logo" width="80" height="80">
+    <img src="logo-color.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">The Odin Project: Tic-Tac-Toe Game</h3>
